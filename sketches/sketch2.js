@@ -2,8 +2,8 @@
 registerSketch('sk2', function (p) {
   const bathtubX = 100;
   const bathtubY = 150;
-  const bathtubWidth = 400;
-  const bathtubHeight = 150;
+  const bathtubWidth = 500;
+  const bathtubHeight = 200;
   const rimHeight = 30;
 
   p.setup = function () {
@@ -66,6 +66,25 @@ registerSketch('sk2', function (p) {
     p.fill(100, 150, 240, 180);
     p.noStroke();
     p.rect(bathtubX + 2, bodyBottom - waterHeight, bathtubWidth - 4, waterHeight);
+
+    // tick marks for hours
+    p.stroke(0);
+    p.strokeWeight(1);
+    p.fill(0);
+    p.textSize(12);
+    p.textAlign(p.RIGHT, p.CENTER);
+
+    for (let h = 0; h <= 24; h++) {
+      const tickY = bodyBottom - p.map(h, 0, 24, 0, bathtubHeight - 5);
+      const tickLength = 10;
+      p.line(bathtubX - tickLength, tickY, bathtubX, tickY);
+      
+      // add label every 2 hours
+      if (h % 2 === 0) {
+        p.text(h + ':00', bathtubX - tickLength - 5, tickY);
+      }
+    }
+
   };
   p.windowResized = function () { p.resizeCanvas(p.windowWidth, p.windowHeight); };
 });
