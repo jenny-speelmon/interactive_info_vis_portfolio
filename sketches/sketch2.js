@@ -74,9 +74,9 @@ registerSketch('sk2', function (p) {
     p.textSize(12);
     p.textAlign(p.RIGHT, p.CENTER);
 
-    for (let h = 0; h <= 24; h++) {
+    for (let h = 0; h <= 24; h += 0.5) {
       const tickY = bodyBottom - p.map(h, 0, 24, 0, bathtubHeight - 5);
-      const tickLength = 10;
+      const tickLength = (h % 1 === 0) ? 10 : 5;
       p.line(bathtubX - tickLength, tickY, bathtubX, tickY);
       
       // add label every 2 hours
@@ -84,7 +84,7 @@ registerSketch('sk2', function (p) {
         p.text(h + ':00', bathtubX - tickLength - 5, tickY);
       }
     }
-
+    
   };
   p.windowResized = function () { p.resizeCanvas(p.windowWidth, p.windowHeight); };
 });
