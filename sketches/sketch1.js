@@ -1,4 +1,7 @@
 // Instance-mode sketch registered as 'sk1'
+
+// testing from a new laptop (please work)
+
 registerSketch('sk1', function (p) {
   let horizon;
 
