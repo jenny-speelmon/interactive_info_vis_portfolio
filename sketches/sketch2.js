@@ -56,6 +56,16 @@ registerSketch('sk2', function (p) {
       fx + curveWidth, fy - stemHeight + curveHeight / 2
     );
     p.endShape();
+
+    // Fill the bathtub with water
+    const hours = p.hour();
+    const minutes = p.minute();
+    const totalMinutes = hours * 60 + minutes;
+    const maxMinutes = 24 * 60;
+    const waterHeight = p.map(totalMinutes, 0, maxMinutes, 0, bathtubHeight - 5);
+    p.fill(100, 150, 240, 180);
+    p.noStroke();
+    p.rect(bathtubX + 2, bodyBottom - waterHeight, bathtubWidth - 4, waterHeight);
   };
   p.windowResized = function () { p.resizeCanvas(p.windowWidth, p.windowHeight); };
 });
