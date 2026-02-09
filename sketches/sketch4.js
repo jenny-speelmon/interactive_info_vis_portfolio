@@ -4,6 +4,7 @@ registerSketch('sk4', function (p) {
   const stemHeight = 200;
   const branchLength = 50;
   const branchCount = 24;
+  const budSize = 16;
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
@@ -26,11 +27,16 @@ registerSketch('sk4', function (p) {
     // Draw branches for buds
     p.strokeWeight(3);
     for (let i = 0; i < branchCount; i++) {
-      const branchY = cy - (i / (branchCount - 1)) * stemHeight; // evenly spaced along stem
-      const angle = (i % 2 === 0 ? -1 : 1) * p.PI / 6; // alternate left/right ~30°
+      const branchY = cy - (i / (branchCount - 1)) * stemHeight;
+      const angle = (i % 2 === 0 ? -1 : 1) * p.PI / 6;
       const x2 = cx + branchLength * p.sin(angle);
-      const y2 = branchY - branchLength * (1 - p.cos(angle)); // slight vertical adjustment
+      const y2 = branchY - branchLength * (1 - p.cos(angle));
+      p.stroke(0, 150, 0);
       p.line(cx, branchY, x2, y2);
+
+      p.noStroke();
+      p.fill(255, 100, 100);
+      p.ellipse(x2, y2, budSize, budSize);
     }
   };
   p.windowResized = function () {
