@@ -30,9 +30,19 @@ registerSketch('sk3', function (p) {
       let x = cx + a * p.cos(angle);
       let y = cy + b * p.sin(angle);
 
+      let isHour = i % 2 === 1;
+
       p.noStroke();
-      p.fill(180);
-      p.circle(x, y, 10);
+
+      if (isHour) {
+        // hour bead
+        p.fill(80, 90, 140);   // darker color
+        p.circle(x, y, 16);    // bigger
+      } else {
+        // half-hour bead
+        p.fill(240, 180, 80); // lighter color
+        p.circle(x, y, 10);     // smaller
+      }
     }
   };
 
