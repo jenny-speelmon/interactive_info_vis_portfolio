@@ -41,7 +41,7 @@ registerSketch('sk3', function (p) {
       const beadRadius = isHour ? 16 : 10;
       const col = isHour ? p.color(80, 90, 140) : p.color(240, 180, 80);
 
-      const t = passedCount === 1 ? 0.5 : i / (passedCount - 1);
+      const t = passedCount <= 1 ? 0.5 : i / (passedCount - 1);
       const angle = startAngle + t * passedArc;
       const x = cx + radius * p.cos(angle);
       const y = cy + radius * p.sin(angle);
@@ -58,7 +58,7 @@ registerSketch('sk3', function (p) {
       const beadRadius = isHour ? 16 : 10;
       const col = isHour ? p.color(80, 90, 140) : p.color(240, 180, 80);
 
-      const t = futureCount === 1 ? 0.5 : i / (futureCount - 1);
+      const t = futureCount <= 1 ? 0.5 : i / (futureCount - 1);
       const angle = startAngle + passedArc + minGap + t * futureArc;
       const x = cx + radius * p.cos(angle);
       const y = cy + radius * p.sin(angle);
