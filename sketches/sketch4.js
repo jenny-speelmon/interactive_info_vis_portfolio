@@ -4,13 +4,15 @@ registerSketch('sk4', function (p) {
   const stemHeight = 200;
   const branchLength = 50;
   const branchCount = 24;
-  const budSize = 16;
+  const maxBudSize = 16;
+  const minBudSize = 4;
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
     cx = p.width / 2;
     cy = p.height - 100;
   };
+
   p.draw = function () {
     p.background(255);
 
@@ -23,6 +25,11 @@ registerSketch('sk4', function (p) {
     p.stroke(0, 150, 0);
     p.strokeWeight(6);
     p.line(cx, cy, cx, cy - stemHeight);
+
+    // time calculation
+    const hours = p.hour();
+    const minutes = p.minute();
+    const hourProgress = (hours % 24) + minutes / 60;
    
     // Draw branches for buds
     p.strokeWeight(3);
@@ -33,6 +40,13 @@ registerSketch('sk4', function (p) {
       const y2 = branchY - branchLength * (1 - p.cos(angle));
       p.stroke(0, 150, 0);
       p.line(cx, branchY, x2, y2);
+
+      const topToBottom = branchCount - 1 - i;
+      let budSize = maxBudSize;
+      if (hourProgress > topToBottom) {
+        const hourFraction = Math.min((hourProgress - topToBottom), 1);
+        budSize = p.map(hourFraction, 0, 1, maxBudSize, minBudSize);
+      }
 
       p.noStroke();
       p.fill(255, 100, 100);
