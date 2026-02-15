@@ -42,6 +42,48 @@ registerSketch('sk5', function (p) {
     p.line(margin, p.height - margin, p.width - margin, p.height - margin);
     p.line(margin, margin, margin, p.height - margin);
 
+    // label the axes
+    p.stroke(0);
+    p.fill(0);
+    p.textSize(12);
+
+    // show 1979
+    let firstIndex = 0;
+    let firstYear = years[firstIndex];
+    let firstX = p.map(firstIndex, 0, years.length - 1, margin, p.width - margin);
+
+    p.line(firstX, p.height - margin, firstX, p.height - margin + 6);
+    p.noStroke();
+    p.textAlign(p.CENTER);
+    p.text(firstYear, firstX, p.height - margin + 20);
+    p.stroke(0);
+
+    // every 5 years
+    years.forEach((year, i) => {
+      if (year >= 1985 && year % 5 === 0) {
+        let x = p.map(i, 0, years.length - 1, margin, p.width - margin);
+
+        p.line(x, p.height - margin, x, p.height - margin + 6);
+
+        p.noStroke();
+        p.textAlign(p.CENTER);
+        p.text(year, x, p.height - margin + 20);
+        p.stroke(0);
+      }
+    });
+
+    // show 2023
+    let lastIndex = years.length - 1;
+    let lastYear = years[lastIndex];
+    let lastX = p.map(lastIndex, 0, years.length - 1, margin, p.width - margin);
+
+    p.line(lastX, p.height - margin, lastX, p.height - margin + 6);
+    p.noStroke();
+    p.textAlign(p.CENTER);
+    p.text(lastYear, lastX, p.height - margin + 20);
+    p.stroke(0);
+
+    // draw line graph
     p.noFill();
     p.stroke(40, 120, 200);
     p.strokeWeight(3);
