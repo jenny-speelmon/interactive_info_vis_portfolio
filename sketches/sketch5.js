@@ -117,6 +117,20 @@ registerSketch('sk5', function (p) {
       p.vertex(x, y);
     });
     p.endShape();
+
+    // label axes
+    p.textAlign(p.CENTER);
+    p.textSize(14);
+    p.fill(0);
+    p.noStroke();
+    p.text("Year", p.width / 2, p.height - 20);
+
+    p.push();
+    p.translate(20, p.height / 2);
+    p.rotate(-p.HALF_PI);
+    p.textAlign(p.CENTER);
+    p.text("Total Recreation Visits (Millions)", 0, 0);
+    p.pop();
   }
 
   p.windowResized = function () { p.resizeCanvas(p.windowWidth, p.windowHeight); };
