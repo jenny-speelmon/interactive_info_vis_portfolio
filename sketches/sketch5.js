@@ -42,7 +42,7 @@ registerSketch('sk5', function (p) {
     p.line(margin, p.height - margin, p.width - margin, p.height - margin);
     p.line(margin, margin, margin, p.height - margin);
 
-    // label the axes
+    // label x axis
     p.stroke(0);
     p.fill(0);
     p.textSize(12);
@@ -82,6 +82,28 @@ registerSketch('sk5', function (p) {
     p.textAlign(p.CENTER);
     p.text(lastYear, lastX, p.height - margin + 20);
     p.stroke(0);
+    
+    // y axis ticks
+    let interval = 20_000_000;
+    let numTicks = Math.ceil(maxVisits / interval);
+
+    p.stroke(0);
+    p.fill(0);
+    p.textAlign(p.RIGHT, p.CENTER);
+
+    for (let j = 0; j <= numTicks; j++) {
+      let yVal = j * interval;
+      let y = p.map(yVal, 0, maxVisits, p.height - margin, margin);
+
+      if (yVal === 100_000_000) continue;
+
+      p.line(margin - 6, y, margin, y);
+
+      p.noStroke();
+      p.text((yVal / 1e6) + "M", margin - 10, y);
+      p.stroke(0);
+    }
+
 
     // draw line graph
     p.noFill();
