@@ -28,11 +28,11 @@ registerSketch('sk5', function (p) {
     p.noStroke();
     p.fill(0);
     p.textAlign(p.CENTER);
-    p.textSize(32);
-    p.text("The Pandemic’s Impact on National Park Visits", p.width / 2, 60);
+    p.textSize(25);
+    p.text("The Pandemic’s Negative Impact on National Park Visits", p.width / 2, 60);
 
     let years = Object.keys(yearlyTotals).map(Number).sort((a, b) => a - b);
-    let margin = 120;
+    let margin = 180;
 
     let maxVisits = Math.max(...Object.values(yearlyTotals));
 
@@ -148,10 +148,10 @@ registerSketch('sk5', function (p) {
     p.textSize(14);
     p.fill(0);
     p.noStroke();
-    p.text("Year", p.width / 2, p.height - 20);
+    p.text("Year", p.width / 2, p.height - margin + 80);
 
     p.push();
-    p.translate(20, p.height / 2);
+    p.translate(margin - 80, p.height / 2);
     p.rotate(-p.HALF_PI);
     p.textAlign(p.CENTER);
     p.text("Total Recreation Visits (Millions)", 0, 0);
@@ -162,17 +162,17 @@ registerSketch('sk5', function (p) {
       { 
         year: 2020, 
         text: "Drop: around half of main parks closed due to COVID-19, and some parks had closed roads and facilities", 
-        offsetX: 20, offsetY: 20 
+        offsetX: 20, offsetY: 100, side: 'left'
       },
       { 
         year: 2021, 
         text: "Partial recovery: some closures and restrictions lifted", 
-        offsetX: 20, offsetY: -20 
+        offsetX: 20, offsetY: -50, side: 'left'
       },
       { 
         year: 2022, 
         text: "Recovery: post-pandemic surge in visits after parks reopened and demand increased", 
-        offsetX: 20, offsetY: -20 
+        offsetX: 5,offsetY: 100, side: 'right'
       }
     ];
 
@@ -183,9 +183,10 @@ registerSketch('sk5', function (p) {
         let y = p.map(yearlyTotals[a.year], 0, maxVisits, p.height - margin, margin);
 
         // draw line to the left
-        let lineLength = 60;
-        let lineX = x - lineLength;
-        let lineY = y + a.offsetY;
+        let lineX = a.side === 'left' && a.year !== 2022 ? x - 60 
+                    : a.side === 'right' && a.year !== 2022 ? x + 60 
+                    : x;
+        let lineY = y + (a.offsetY || 0);
         p.stroke(0);
         p.strokeWeight(1);
         p.line(x, y, lineX, lineY);
@@ -193,28 +194,43 @@ registerSketch('sk5', function (p) {
         // draw the text left of line
         p.noStroke();
         p.fill(0);
-        p.textAlign(p.RIGHT, p.TOP);
         let maxWidth = 180;
         let lineHeight = 16;
-
         let words = a.text.split(' ');
-          let line = '';
-          let drawY = lineY;
+        let line = '';
+        let drawY = lineY;
 
-          for (let j = 0; j < words.length; j++) {
-            let testLine = line + words[j] + ' ';
+        if (a.side === 'left' && a.year !== 2022) {
+          p.textAlign(p.RIGHT, p.TOP);
+          words.forEach((word, index) => {
+            let testLine = line + word + ' ';
             if (p.textWidth(testLine) > maxWidth && line !== '') {
               p.text(line, lineX - 5, drawY);
-              line = words[j] + ' ';
+              line = word + ' ';
               drawY += lineHeight;
             } else {
               line = testLine;
             }
-          }
-          if (line !== '') {
-            p.text(line, lineX - 5, drawY);
-          }
-
+            if (index === words.length - 1) {
+              p.text(line, lineX - 5, drawY);
+            }
+          });
+        } else {
+          p.textAlign(p.LEFT, p.TOP);
+          words.forEach((word, index) => {
+            let testLine = line + word + ' ';
+            if (p.textWidth(testLine) > maxWidth && line !== '') {
+              p.text(line, lineX + (a.offsetX || 5), drawY);
+              line = word + ' ';
+              drawY += lineHeight;
+            } else {
+              line = testLine;
+            }
+            if (index === words.length - 1) {
+              p.text(line, lineX + (a.offsetX || 5), drawY);
+            }
+          });
+        }
       }
     });
   }
