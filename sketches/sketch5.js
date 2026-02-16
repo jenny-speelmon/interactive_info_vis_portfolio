@@ -104,6 +104,33 @@ registerSketch('sk5', function (p) {
       p.stroke(0);
     }
 
+    // highlight pandemic
+    let startYear = 2018;
+    let endYear = 2023;
+    let startIndex = years.indexOf(startYear);
+    let endIndex = years.indexOf(endYear);
+
+    if (startIndex >= 0 && endIndex >= 0) {
+      // get the area around line
+      let yValues = [];
+      for (let i = startIndex; i <= endIndex; i++) {
+        let y = p.map(yearlyTotals[years[i]], 0, maxVisits, p.height - margin, margin);
+        yValues.push(y);
+      }
+
+      let xStart = p.map(startIndex, 0, years.length - 1, margin, p.width - margin);
+      let xEnd = p.map(endIndex, 0, years.length - 1, margin, p.width - margin);
+      let yTop = Math.min(...yValues);
+      let yBottom = Math.max(...yValues);
+
+      let buffer = 10;
+
+      // draw box
+      p.fill(255, 255, 0, 80);
+      p.stroke(200, 150, 0);
+      p.strokeWeight(2);
+      p.rect(xStart, yTop - buffer, xEnd - xStart, (yBottom - yTop) + 2 * buffer);
+    }
 
     // draw line graph
     p.noFill();
