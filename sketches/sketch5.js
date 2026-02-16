@@ -158,6 +158,48 @@ registerSketch('sk5', function (p) {
     p.textAlign(p.CENTER);
     p.text("Total Recreation Visits (Millions)", 0, 0);
     p.pop();
+
+    // pandemic annotations
+    const pandemicAnnotations = [
+      { 
+        year: 2020, 
+        text: "Drop: around half of main parks closed due to COVID-19, and some parks had closed roads and facilities", 
+        offsetX: 20, offsetY: 20 
+      },
+      { 
+        year: 2021, 
+        text: "Partial recovery: some closures and restrictions lifted", 
+        offsetX: 20, offsetY: -20 
+      },
+      { 
+        year: 2022, 
+        text: "Recovery: post-pandemic surge in visits after parks reopened and demand increased", 
+        offsetX: 20, offsetY: -20 
+      }
+    ];
+
+    pandemicAnnotations.forEach(a => {
+      let i = years.indexOf(a.year);
+      if (i >= 0) {
+        let x = p.map(i, 0, years.length - 1, margin, p.width - margin);
+        let y = p.map(yearlyTotals[a.year], 0, maxVisits, p.height - margin, margin);
+
+        // Draw connecting line to the left
+        let lineLength = 60; // how far left the line goes
+        let lineX = x - lineLength;
+        let lineY = y + a.offsetY; // can still adjust vertical offset
+
+        p.stroke(0);
+        p.strokeWeight(1);
+        p.line(x, y, lineX, lineY);
+
+        // Draw the text to the left of the line
+        p.noStroke();
+        p.fill(0);
+        p.textAlign(p.RIGHT, p.CENTER); // right-aligned so it doesn't overflow
+        p.text(a.text, lineX - 5, lineY); // 5px padding
+      }
+    });
   }
 
   p.windowResized = function () { p.resizeCanvas(p.windowWidth, p.windowHeight); };
