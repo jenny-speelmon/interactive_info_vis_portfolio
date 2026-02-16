@@ -33,8 +33,6 @@ registerSketch('sk5', function (p) {
 
     let years = Object.keys(yearlyTotals).map(Number).sort((a, b) => a - b);
     let margin = 120;
-    let chartWidth = p.width - 2 * margin;
-    let chartHeight = p.height - 2 * margin;
 
     let maxVisits = Math.max(...Object.values(yearlyTotals));
 
@@ -184,20 +182,39 @@ registerSketch('sk5', function (p) {
         let x = p.map(i, 0, years.length - 1, margin, p.width - margin);
         let y = p.map(yearlyTotals[a.year], 0, maxVisits, p.height - margin, margin);
 
-        // Draw connecting line to the left
-        let lineLength = 60; // how far left the line goes
+        // draw line to the left
+        let lineLength = 60;
         let lineX = x - lineLength;
-        let lineY = y + a.offsetY; // can still adjust vertical offset
-
+        let lineY = y + a.offsetY;
         p.stroke(0);
         p.strokeWeight(1);
         p.line(x, y, lineX, lineY);
 
-        // Draw the text to the left of the line
+        // draw the text left of line
         p.noStroke();
         p.fill(0);
-        p.textAlign(p.RIGHT, p.CENTER); // right-aligned so it doesn't overflow
-        p.text(a.text, lineX - 5, lineY); // 5px padding
+        p.textAlign(p.RIGHT, p.TOP);
+        let maxWidth = 180;
+        let lineHeight = 16;
+
+        let words = a.text.split(' ');
+          let line = '';
+          let drawY = lineY;
+
+          for (let j = 0; j < words.length; j++) {
+            let testLine = line + words[j] + ' ';
+            if (p.textWidth(testLine) > maxWidth && line !== '') {
+              p.text(line, lineX - 5, drawY);
+              line = words[j] + ' ';
+              drawY += lineHeight;
+            } else {
+              line = testLine;
+            }
+          }
+          if (line !== '') {
+            p.text(line, lineX - 5, drawY);
+          }
+
       }
     });
   }
